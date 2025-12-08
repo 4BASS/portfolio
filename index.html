@@ -13,8 +13,8 @@
         :root {
             --primary-color: #8A2BE2; /* メインカラー（藤色に近い紫） */
             --secondary-color: #4B0082; /* タイトル・見出し（濃いインディゴ） */
-            --accent-color: #FF4500; /* 強調カラー（オレンジレッド、情熱・注目をイメージ） */
-            --accent-shadow-rgb: 255, 69, 0; /* 強調カラーのRGB値 for text-shadow */
+            --accent-color: #E60000; /* 強調カラー（鮮やかな赤） */
+            --accent-shadow-rgb: 230, 0, 0; /* 強調カラーのRGB値 for text-shadow */
             --text-color: #333;
             --background-light: #F8F0FF; /* 薄い紫がかった白 */
             --background-white: #fff;
@@ -203,12 +203,6 @@
             margin: 0;
         }
 
-        .gakuchika-summary {
-            margin-top: 30px;
-            border-left: 5px solid var(--primary-color);
-            padding-left: 20px;
-        }
-
         /* 強調部分をアクセントカラーに変更 */
         .gakuchika-summary strong {
             color: var(--accent-color); 
@@ -217,29 +211,82 @@
             text-shadow: 0 0 5px rgba(var(--accent-shadow-rgb), 0.5); 
         }
 
-        /* ガクチカの具体的な行動をリスト形式で表現 */
-        .gakuchika-actions {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
+        /* -------------------------- */
+        /* 図のスタイル: 課題解決フロー */
+        /* -------------------------- */
+        .process-flow {
+            position: relative;
+            margin-top: 30px;
+            padding: 0 10px;
         }
 
-        .gakuchika-actions li {
+        .flow-step {
             position: relative;
-            padding-left: 25px;
-            margin-bottom: 15px;
+            padding-left: 60px;
+            padding-bottom: 30px;
+        }
+
+        .flow-step:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--primary-color); /* 紫の縦線 */
+        }
+        
+        .flow-step-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: var(--background-white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 0 0 5px var(--background-white), 0 0 0 7px var(--primary-color);
+        }
+
+        .flow-step h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            color: var(--secondary-color);
+        }
+
+        .flow-description p {
+            margin: 0;
             font-size: 0.95em;
         }
 
-        .gakuchika-actions li::before {
+        .flow-actions {
+             list-style: none;
+             padding-left: 15px;
+             margin-top: 5px;
+        }
+
+        .flow-actions li {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        .flow-actions li::before {
             content: "\f00c"; /* FontAwesome: チェックマーク */
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             position: absolute;
             left: 0;
             color: var(--primary-color);
+            font-size: 0.8em;
         }
-        
+
         /* 結論の強調 */
         .key-takeaway {
             text-align: center;
@@ -310,15 +357,20 @@
             .profile-text p.affiliation {
                 font-size: 1em;
             }
-        }
 
-        @media (max-width: 480px) {
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: space-around;
+            /* スマホでのフロー図の調整 */
+            .flow-step {
+                padding-left: 50px;
+                padding-bottom: 20px;
             }
-            .nav-links li {
-                margin: 5px;
+            .flow-step:not(:last-child)::before {
+                left: 15px;
+                width: 2px;
+            }
+            .flow-step-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 1em;
             }
         }
     </style>
@@ -383,28 +435,51 @@
                         <h3>全員が楽しめる学校づくりへの挑戦</h3>
                     </div>
 
-                    <div class="gakuchika-summary">
-                        <p>
-                            240名規模の中学校生徒会で、「全員が楽しめる学校づくり」に尽力しました。学校をまとめる立場として、行事の主催・総括に加え、先生方と協力して学校改革に取り組みました。
+                    <!-- 課題解決フロー図の開始 -->
+                    <div class="process-flow">
+                        <p style="text-align: center; font-size: 1.1em; color: #666; margin-bottom: 25px;">
+                            240名規模の生徒会活動における課題解決プロセス
                         </p>
 
-                        <p>
-                            **【課題】** 当初、ルールを守れない生徒や、挨拶をしない風潮に悩みました。
-                        </p>
+                        <!-- STEP 1: 課題 (Problem) -->
+                        <div class="flow-step">
+                            <div class="flow-step-icon">1</div>
+                            <h4>【課題発見】</h4>
+                            <div class="flow-description">
+                                <p>
+                                    当初、ルールを守れない生徒や、挨拶をしない風潮があり、学校全体の一体感に欠けていました。
+                                </p>
+                            </div>
+                        </div>
 
-                        <p>
-                            **【具体的な行動】**
-                            <ul class="gakuchika-actions">
-                                <li>目安箱の設置で意見を募り、**<strong>「傾聴」</strong>**の姿勢を徹底。</li>
-                                <li>私自身が毎朝正門で挨拶を徹底し、**<strong>「粘り強い行動」</strong>**で規範を示す。</li>
-                                <li>みんなが心から楽しめる行事を企画・実行し、参加意欲を向上させる。</li>
-                            </ul>
-                        </p>
+                        <!-- STEP 2: 具体的な行動 (Action) -->
+                        <div class="flow-step">
+                            <div class="flow-step-icon">2</div>
+                            <h4>【具体的な行動】</h4>
+                            <div class="flow-description">
+                                <p>
+                                    全員が納得して行動できる仕組みを作るため、以下の施策を実行しました。
+                                </p>
+                                <ul class="flow-actions">
+                                    <li>目安箱の設置で意見を募り、**<strong>「傾聴」</strong>**の姿勢を徹底。</li>
+                                    <li>私自身が毎朝正門で挨拶を徹底し、**<strong>「粘り強い行動」</strong>**で規範を示す。</li>
+                                    <li>みんなが心から楽しめる行事を企画・実行。</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                        <p>
-                            **【結果】** 学校に対する意見を幅広く把握でき、学校づくりへの参加意識が向上。お互いに進んで挨拶する生徒が増え、主体性のある、活気ある学校へと変革することができました。
-                        </p>
+                        <!-- STEP 3: 結果 (Result) -->
+                        <div class="flow-step">
+                            <div class="flow-step-icon">3</div>
+                            <h4>【結果・成果】</h4>
+                            <div class="flow-description">
+                                <p>
+                                    学校に対する意見を幅広く把握でき、学校づくりへの参加意識が向上。お互いに進んで挨拶する生徒が増え、主体性のある、活気ある学校へと変革することができました。
+                                </p>
+                            </div>
+                        </div>
                     </div>
+                    <!-- 課題解決フロー図の終了 -->
 
                     <div class="key-takeaway">
                         この経験から、課題解決における<br>
