@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio | 鈴木琉兎</title>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /*
+        * 基本設定とリセット
+        * 配色: 情報系をイメージする紫色を基調とし、清潔感を保つ。
+        */
+        :root {
+            --primary-color: #8A2BE2; /* メインカラー（藤色に近い紫） */
+            --secondary-color: #4B0082; /* タイトル・見出し（濃いインディゴ） */
+            --accent-color: #E60000; /* 強調カラー（鮮やかな赤） */
+            --accent-shadow-rgb: 230, 0, 0; /* 強調カラーのRGB値 for text-shadow */
+            --text-color: #333;
+            --background-light: #F8F0FF; /* 薄い紫がかった白 */
+            --background-white: #fff;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--background-light);
+            scroll-behavior: smooth;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        /*
+        * 8. グローバルな強調 (ユーザー要求: <strong>タグを赤色に)
+        */
+        strong {
+            color: var(--accent-color); /* 強調カラー（鮮やかな赤）を適用 */
+            font-weight: 700;
+            text-shadow: 0 0 1px rgba(var(--accent-shadow-rgb), 0.5); /* 視認性を上げるために少しシャドウを追加 */
+        }
+
+        /* コンテナ */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /*
+        * 1. ヘッダー
+        */
+        .header {
+            background-color: var(--background-white);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        /*
+        * 共通セクションスタイル
+        */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 50px;
+            color: var(--secondary-color);
+            position: relative;
+            font-weight: 600;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /*
+        * ヒーローセクションのスタイル (数式アニメーション)
+        */
+        #hero {
+            position: relative;
+            overflow: hidden; 
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        /* 数式コンテナ */
+        .formula-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* 数式アイテムの共通スタイル */
+        .formula-item {
+            position: absolute;
+            font-size: 3em;
+            color: rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+            animation: flowRight 30s linear infinite;
+            font-weight: 800;
+            text-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+            font-family: monospace, 'Courier New', Courier; 
+        }
+
+        /* アニメーションのキーフレーム: 左から右へ流れる */
+        @keyframes flowRight {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100vw);
+            }
+        }
+
+        /* アイテムごとのアニメーション速度調整 */
+        .formula-item:nth-child(2n) {
+            animation-duration: 25s;
+            animation-delay: -5s;
+            font-size: 4em;
+            color: rgba(255, 255, 255, 0.07);
+        }
+
+        .formula-item:nth-child(3n) {
+            animation-duration: 35s;
+            animation-delay: -10s;
+            font-size: 2.5em;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* ヒーローセクションのタイトル/テキストを調整 */
+        #hero h1 {
+            color: var(--background-white) !important; 
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.8); 
+        }
+        #hero p {
+            color: #ccc !important;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* CTAボタンの配色を反転 */
+        #hero .cta-button {
+            background-color: var(--accent-color) !important;
+            box-shadow: 0 4px 15px rgba(230, 0, 0, 0.4);
+        }
+        
+        /*
+        * 2. 自己紹介セクション
+        */
+        #about {
+            background-color: var(--background-white);
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 40px;
+            background-color: var(--background-white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        /* プロフィールアイコンコンテナ用スタイル */
+        .profile-icon-box {
+            flex-shrink: 0;
+            width: 150px;
+            height: 150px;
+            background-color: var(--primary-color); /* 背景色を紫に戻す */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+            box-shadow: 0 0 0 8px rgba(138, 43, 226, 0.2);
+            transition: transform 0.3s ease-out;
+        }
+
+        .profile-icon-box:hover {
+            transform: scale(1.05);
+        }
+        
+        /* アイコンの色設定を再度追加 */
+        .profile-icon-box i {
+            color: var(--background-white);
+        }
+        
+        .profile-text h2 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .profile-text p.affiliation {
+            font-size: 1.1em;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 10px;
+        }
+
+        /*
+        * 3. ガクチカセクション (強みと行動力)
+        */
+        #strength {
+            background-color: var(--background-light);
+        }
+
+        .strength-content {
+            background-color: var(--background-white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        /* ガクチカ画像コンテナのスタイル */
+        .strength-image-container {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-bottom: 2px dashed var(--primary-color); 
+        }
+
+        /* 画像要素自体にスタイルを適用 */
+        .strength-image-container img {
+            max-width: 100%; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto; 
+            border-radius: var(--border-radius); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .strength-image-container p {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+
+        .strength-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .strength-header i {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .strength-header h3 {
+            font-size: 1.4em;
+            color: var(--secondary-color);
+            margin: 0;
+        }
+
+        /* -------------------------- */
+        /* 図のスタイル: 課題解決フロー */
+        /* -------------------------- */
+        .process-flow {
+            position: relative;
+            margin-top: 30px;
+            padding: 0 10px;
+        }
+
+        .flow-step {
+            position: relative;
+            padding-left: 60px;
+            padding-bottom: 30px;
+        }
+
+        .flow-step:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .flow-step-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: var(--background-white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 0 0 5px var(--background-white), 0 0 0 7px var(--primary-color);
+        }
+
+        .flow-step h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            color: var(--secondary-color);
+        }
+
+        .flow-description p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        .flow-actions {
+             list-style: none;
+             padding-left: 15px;
+             margin-top: 5px;
+        }
+
+        .flow-actions li {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        .flow-actions li::before {
+            content: "\f00c"; /* FontAwesome: チェックマーク */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-size: 0.8em;
+        }
+
+        /* 結論の強調 */
+        .key-takeaway {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #E6E6FA; /* ラベンダー（薄い紫） */
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        /* 結論の強調部分をアクセントカラーに変更 */
+        .key-takeaway span {
+            color: var(--accent-color); /* アクセントカラーを適用 */
+            font-size: 1.2em;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(var(--accent-shadow-rgb), 0.7);
+        }
+
+        /*
+        * 4. スキルセクション
+        */
+        #skills {
+            background-color: var(--background-white);
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-category {
+            padding: 25px;
+            background-color: var(--background-light);
+            border-left: 5px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-category h3 {
+            color: var(--secondary-color);
+            font-size: 1.3em;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .skill-item {
+            margin-bottom: 15px;
+        }
+
+        .skill-item p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 0 5px 0;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .skill-bar {
+            background-color: #ddd;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-level {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        /* -------------------------- */
+        /* 7. アニメーション設定 */
+        /* -------------------------- */
+
+        /* 共通のホバー効果の強化 */
+        .card-animation:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 登場アニメーションのキーフレーム */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 登場アニメーションの基本クラス */
+        .animate-on-scroll {
+            opacity: 0;
+        }
+
+        /* 登場アニメーションの適用クラス */
+        .animate-on-scroll.animate-in {
+            animation: fadeSlideUp 0.8s ease-out forwards;
+        }
+
+        /* CTAボタンのパルスアニメーション */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(var(--accent-shadow-rgb), 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(var(--accent-shadow-rgb), 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(var(--accent-shadow-rgb), 0);
+            }
+        }
+
+        .cta-button {
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        #hero .cta-button {
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /*
+        * レスポンシブデザイン (スマホ対応)
+        */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .nav-links li {
+                margin: 0 8px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+                padding: 30px 20px;
+            }
+
+            .profile-icon-box {
+                width: 100px;
+                height: 100px;
+            }
+
+            /* スマホでのフロー図の調整 */
+            .flow-step {
+                padding-left: 50px;
+                padding-bottom: 20px;
+            }
+            .flow-step:not(:last-child)::before {
+                left: 15px;
+                width: 2px;
+            }
+            .flow-step-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 1em;
+            }
+            
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <!-- 
+        JavaScript関数の定義を<head>内に移動：
+        画像(<img>)が処理され、エラー(onerror)が発生する前に、
+        handleImageError関数が確実に定義されているようにします。
+    -->
+    <script>
+        /**
+         * 画像の読み込みに失敗した場合に、プレースホルダーに置き換える処理
+         * @param {HTMLImageElement} imgElement - 読み込みに失敗した <img> 要素
+         * @param {string} altText - 画像の代替テキスト
+         */
+        function handleImageError(imgElement, altText) {
+            // 1. エラーをコンソールに記録
+            console.error("画像の読み込みに失敗しました。ファイル名:", imgElement.src);
+            
+            // 2. 代替のプレースホルダー要素を作成
+            const placeholder = document.createElement('div');
+            // CSSをインラインで適用
+            placeholder.style.cssText = `
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                max-width: 300px;
+                height: 150px;
+                margin: 20px auto 10px;
+                background-color: #fce4e4; /* 薄い赤 */
+                border: 2px dashed var(--accent-color);
+                border-radius: var(--border-radius);
+                color: var(--accent-color);
+                text-align: center;
+                font-weight: 500;
+                font-size: 0.9em;
+            `;
+
+            // プレースホルダーの内容 (Font Awesomeアイコンを使用)
+            placeholder.innerHTML = `
+                <i class="fas fa-exclamation-triangle" style="font-size: 2em; margin-bottom: 5px;"></i>
+                <div>画像が見つかりません。</div>
+                <small>(${altText}の代替)</small>
+            `;
+
+            // 3. 元のimg要素をプレースホルダーに置き換える
+            const parentContainer = imgElement.parentElement;
+            if (parentContainer) {
+                parentContainer.replaceChild(placeholder, imgElement);
+                // 付随テキストも更新
+                const captionP = parentContainer.querySelector('p');
+                if (captionP) {
+                    // エラー時にキャプションも更新されるように修正
+                    captionP.textContent = `▲ ${altText} (画像エラー)`;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- 1. ヘッダー -->
+    <header class="header">
+        <div class="container nav">
+            <span class="logo">My Portfolio</span>
+            <ul class="nav-links">
+                <li><a href="#about">自己紹介</a></li>
+                <li><a href="#strength">ガクチカ</a></li>
+                <li><a href="#skills">スキル</a></li>
+                <li><a href="#contact">連絡先</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- ヒーローセクション (数式アニメーションの背景) -->
+        <section id="hero" class="section">
+            <!-- 数式アニメーションコンテナ -->
+            <div class="formula-container">
+                <!-- 数式風のシンボルをランダムに配置し、横に流す -->
+                <div class="formula-item" style="top: 10%; left: 0%; animation-duration: 28s;">(x+y)/Σ_n</div>
+                <div class="formula-item" style="top: 35%; left: 30%; animation-duration: 32s; animation-delay: -15s;">{λ | G(x)}</div>
+                <div class="formula-item" style="top: 60%; left: 60%; animation-duration: 40s; animation-delay: -8s;">d/dt [E=mc²]</div>
+                <div class="formula-item" style="top: 85%; left: 10%; animation-duration: 25s; animation-delay: -20s;">∫ f(x) dx</div>
+                <div class="formula-item" style="top: 20%; left: 80%; animation-duration: 35s; animation-delay: -3s;">=> P(A|B)</div>
+                <div class="formula-item" style="top: 50%; left: 5%; animation-duration: 30s; animation-delay: -10s;">if (a==b)</div>
+                <div class="formula-item" style="top: 75%; left: 70%; animation-duration: 22s; animation-delay: -6s;">&lt;data /&gt;</div>
+            </div>
+            
+            <div class="container" style="position: relative; z-index: 2;"> <!-- テキストを最前面に -->
+                <h1 style="font-size: 2.5em; margin-bottom: 10px;">
+                    Creative & Technical
+                </h1>
+                <p style="font-size: 1.4em;">
+                    テクノロジーとデザインで社会課題を解決する
+                </p>
+                <a href="#about" class="cta-button" style="display: inline-block; margin-top: 30px; padding: 10px 25px; background-color: var(--primary-color); color: white; border-radius: 5px; font-weight: 600; transition: background-color 0.3s;">
+                    詳しく見る <i class="fas fa-arrow-down"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. 自己紹介 -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title">自己紹介 (About Me)</h2>
+                <div class="profile-card card-animation animate-on-scroll">
+                    <div class="profile-icon-box">
+                        <i class="fas fa-laptop-code" style="font-size: 5em;"></i>
+                    </div>
+                    <div class="profile-text">
+                        <h2>鈴木琉兎</h2>
+                        <p class="affiliation">
+                            日本大学 理工学部 応用情報工学科 1年
+                        </p>
+                        <p>
+                            はじめまして、鈴木琉兎と申します。私は現在、日本大学の理工学部応用情報工学科で、情報科学の基礎から応用まで幅広く学んでいます。特に、<strong>Webアプリケーション開発</strong>と<strong>データ分析</strong>に強い関心を持ち、理論学習だけでなく、実践的なプロジェクトを通じて技術力の向上に努めてきました。
+                        </p>
+                        <p>
+                            私のモットーは「<strong>技術とデザインの両立</strong>」です。単に機能するシステムを作るだけでなく、ユーザーにとって使いやすく、価値のある体験を提供できるプロダクト開発を目指しています。
+                        </p>
+                        <p>
+                            <a href="#skills" style="font-weight: 600;">スキル一覧はこちら <i class="fas fa-external-link-alt"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 学生時代に力を入れたこと（ガクチカ） -->
+        <section id="strength" class="section">
+            <div class="container">
+                <h2 class="section-title">学生時代に力を入れたこと (Strength)</h2>
+                <div class="strength-content animate-on-scroll card-animation">
+                    
+                    <!-- ガクチカ画像セクションの更新: 指定されたURLの画像に差し替えました -->
+                    <div class="strength-image-container">
+                        <img 
+                            src="https://thumb.ac-illust.com/56/56dfc41867dc4d05e285222c24c4e7c2_t.jpeg" 
+                            alt="生徒会活動の様子を示す画像"
+                            onerror="handleImageError(this, this.alt)"
+                        >
+                        <p>▲ 生徒会活動の様子を示す画像</p>
+                    </div>
+
+                    <div class="strength-header">
+                        <i class="fas fa-handshake"></i>
+                        <h3>全員が楽しめる学校づくりへの挑戦</h3>
+                    </div>
+
+                    <!-- 課題解決フロー図の開始 -->
+                    <div class="process-flow">
+                        <p style="text-align: center; font-size: 1.1em; color: #666; margin-bottom: 25px;">
+                            高校時代の生徒会活動（240名規模）における課題解決プロセス
+                        </p>
+
+                        <!-- STEP 1: 課題 (Problem) -->
+                        <div class="flow-step">
+                            <div class="flow-step-icon">1</div>
+                            <h4>【課題発見】ルールの形骸化と一体感の欠如</h4>
+                            <div class="flow-description">
+                                <p>
+                                    生徒会役員として活動する中で、一部の生徒が校内ルールを守らず、また、生徒間の挨拶が形骸化している状況に気づきました。このままでは学校全体の一体感が失われ、活気のない学校になってしまうという危機感がありました。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: 具体的な行動 (Action) -->
+                        <div class="flow-step">
+                            <div class="flow-step-icon">2</div>
+                            <h4>【具体的な行動】傾聴と規範行動の徹底</h4>
+                            <div class="flow-description">
+                                <p>
+                                    「生徒全員が納得して行動できる仕組み」を構築するため、情報収集と行動の二軸でアプローチしました。
+                                </p>
+                                <ul class="flow-actions">
+                                    <li><strong>目安箱（意見収集ツール）の設置:</strong> 生徒の不満や要望を匿名で広く募り、「傾聴」の姿勢を徹底。役員の視点だけでなく、生徒全員の視点から課題を明確化しました。</li>
+                                    <li><strong>朝の挨拶運動の主導:</strong> 私自身が毎朝、正門に立ち、一人ひとりの目を見て挨拶を徹底しました。これを1年間継続し、<strong>「粘り強い行動」</strong>で規範を示すことで、徐々に挨拶を返す生徒が増加しました。</li>
+                                    <li><strong>全員参加型行事の企画:</strong> 生徒の意見を反映し、従来のマンネリ化した行事を見直し、新しい企画（eスポーツ大会、全校ディスカッションなど）を立案・実行しました。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3: 結果 (Result) -->
+                        <div class="flow-step">
+                            <div class="flow-step-icon">3</div>
+                            <h4>【結果・成果】主体性の向上と学校の変革</h4>
+                            <div class="flow-description">
+                                <p>
+                                    意見収集と継続的な行動の結果、生徒の学校づくりへの参加意識が大幅に向上しました。特に行事アンケートでは満足度が前年比で20%増加。また、お互いに進んで挨拶する生徒が目に見えて増え、主体性のある、活気あふれる学校へと変革することができました。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 課題解決フロー図の終了 -->
+
+                    <div class="key-takeaway">
+                        この経験を通じて、課題を多角的に捉え、解決に向けて<br>
+                        <span>「傾聴力と粘り強い実行力」</span>を発揮できる強みを培いました。
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 4. スキルセクション -->
+        <section id="skills" class="section">
+            <div class="container">
+                <h2 class="section-title">スキル (Technical Skills)</h2>
+                <div class="skill-grid">
+
+                    <!-- プログラミング言語 -->
+                    <div class="skill-category card-animation animate-on-scroll" style="animation-delay: 0s;">
+                        <h3><i class="fas fa-code"></i> プログラミング言語</h3>
+                        <div class="skill-item">
+                            <p>Python <span>(85%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 85%;"></div></div>
+                            <small class="text-muted">（データ分析、スクレイピング、競技プログラミング）</small>
+                        </div>
+                        <div class="skill-item">
+                            <p>JavaScript/TypeScript <span>(75%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 75%;"></div></div>
+                            <small class="text-muted">（Web開発全般、モダンなフロントエンド構築）</small>
+                        </div>
+                        <div class="skill-item">
+                            <p>C/C++ <span>(60%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 60%;"></div></div>
+                            <small class="text-muted">（アルゴリズム理解、OS・組み込み基礎）</small>
+                        </div>
+                    </div>
+
+                    <!-- フロントエンド/フレームワーク -->
+                    <div class="skill-category card-animation animate-on-scroll" style="animation-delay: 0.1s;">
+                        <h3><i class="fas fa-desktop"></i> Web/フレームワーク</h3>
+                        <div class="skill-item">
+                            <p>HTML/CSS/Tailwind CSS <span>(90%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 90%;"></div></div>
+                            <small class="text-muted">（セマンティックHTML、完全なレスポンシブ対応）</small>
+                        </div>
+                        <div class="skill-item">
+                            <p>React (Next.js) <span>(70%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 70%;"></div></div>
+                            <small class="text-muted">（Hooksベースのコンポーネント設計、状態管理）</small>
+                        </div>
+                        <div class="skill-item">
+                            <p>Node.js/Express <span>(65%)</p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 65%;"></div></div>
+                            <small class="text-muted">（シンプルなAPI構築、認証処理の経験）</small>
+                        </div>
+                    </div>
+                    
+                    <!-- データベース/データ分析 -->
+                    <div class="skill-category card-animation animate-on-scroll" style="animation-delay: 0.2s;">
+                        <h3><i class="fas fa-database"></i> DB/クラウド/分析</h3>
+                        <div class="skill-item">
+                            <p>SQL (PostgreSQL/MySQL) <span>(80%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 80%;"></div></div>
+                            <small class="text-muted">（複雑なJOINを含むクエリ作成、正規化）</small>
+                        </div>
+                        <div class="skill-item">
+                            <p>Pandas/Matplotlib <span>(75%)</span></p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 75%;"></div></div>
+                            <small class="text-muted">（データ前処理、可視化によるインサイト抽出）</small>
+                        </div>
+                        <div class="skill-item">
+                            <p>Google Cloud/Firebase <span>(55%)</p>
+                            <div class="skill-bar"><div class="skill-level" style="width: 55%;"></div></div>
+                            <small class="text-muted">（Firestore/Hostingを用いたアプリデプロイ経験）</small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        
+        <!-- 5. 連絡先セクション -->
+        <section id="contact" class="section" style="text-align: center; padding: 40px 0;">
+            <div class="container animate-on-scroll">
+                <h2 class="section-title" style="margin-bottom: 30px;">Contact</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    プロジェクトやインターンシップに関するお問い合わせ、技術的なディスカッションなど、お気軽にご連絡ください。
+                </p>
+                <a href="mailto:your.email@example.com" class="cta-button" style="display: inline-block; background-color: var(--primary-color); color: white; padding: 12px 30px; border-radius: 5px; font-weight: bold; transition: background-color 0.3s;">
+                    Emailで連絡する <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- 6. フッター -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 My Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Intersection Observerによるスクロールアニメーション処理 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 画面内に入ったらアニメーションクラスを追加
+                        entry.target.classList.add('animate-in');
+                        // 一度アニメーションしたら監視を停止
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1 // 10%が見えたら発火
+            });
+
+            // 監視対象の要素: .animate-on-scroll クラスを持つすべての要素
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                // heroセクション内の要素以外を監視する（heroは最初から表示されるため）
+                if (element.closest('#hero') === null) {
+                    observer.observe(element);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
